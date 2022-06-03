@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            * {
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            :root {
+                --sotek: #0b6974;
+                --sotek-lighter: #0e8391;
+            }
+
+            @font-face {
+                font-family: TauFont;
+                src: url(font/Tau.otf);
+            }
+            body {
+                background-image: url('img/bg1.gif');
+                background-repeat: repeat;
+                background-attachment: fixed;
+                background-size: auto;
+                background-color: #000;
+                
+                color: #eee;
+                font-family: Orbitron, 'Open Sans', sans-serif;
+            }
+
+
+            a[href] {
+                color: #1e8ad6;
+            }
+
+            a[href]:hover {
+                color: #3ba0e6;
+            }
+
+            .crisisImg {
+                width: 150px;
+                height: 150px;
+            }
+
+            .tauFont {
+                font-family: TauFont;
+            }
+            .larger {
+                font-size: 32px;
+            }
+
+            .sotek {
+                color: var(--sotek-lighter);
+            }
+
+            .hitWrapper {
+                display: flex;
+                justify-content: center;
+            }
+            .hitCounter {
+                width: 300px;
+            }
+
+            header {
+                align-items: center;
+                display: flex;
+                gap: 1em;
+                justify-content: center;
+            }
+
+            h1 {
+                text-shadow: 2px 2px #aaa;
+                font-size: 48px;
+            }
+
+            pre {
+            overflow-x: auto;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: large;
+         }
+
+            code {
+                max-width: 100%;
+            }
+
+            button {
+                background-color: var(--sotek);
+                font-size: 32px;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                border: none;
+                border-radius: 2px;
+                box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+            }
+
+            main {
+                margin-top: 20px;
+            }
+        </style>
+        <script type='text/javascript' src='//www.midijs.net/lib/midi.js'></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+        <script>
+            function playMidi() {
+                MIDIjs.play('img/wings.mid');
+                document.removeEventListener('touchstart', playMidi);
+            }
+            document.addEventListener('touchstart', playMidi)
+        </script>
+    </head>
+    <body>
+        <header>
+            <img src="img/crisis.gif" class="crisisImg" />
+            <h1>Esav'o Hunter Cadre</h1>
+            <img src="img/crisis.gif" class="crisisImg" />
+        </header>
+        <div class="hitWrapper">
+            <img src="http://profile-counter.glitch.me/tyc-list-1/count.svg" class="hitCounter"/>
+        </div>
+
+        <p>
+            <button onClick="MIDIjs.play('img/wings.mid');"><img src="img/play.svg" width="64" height="64"/></button>
+            <button onClick="MIDIjs.stop();"><img src="img/stop.svg" width="64" height="64"/></button>
+        </p>
+
+        <p class="tauFont larger sotek">If anyone figures this out I will buy them a beer</p>
+
+        <p>
+            <img src="img/drone.gif" style="width: 200px;" />
+            <img src="img/dow.gif" style="width: 465px;" />
+        </p>
+
+        <p class="tauFont larger sotek">No really I will</p>
+        
+        <main>
+            <pre>
+                <code>
+++ Super-Heavy Auxiliary Detachment -3CP (T'au Empire) [17 PL, -1CP, 345pts] ++
+
++ Configuration +
+
+Detachment Command Cost [-3CP]
+
+Sept Choice: Bork'an Sept
+
+Shared Faction Bonus [2CP]
+
++ Lord of War +
+
+Stormsurge [17 PL, 345pts]: Cluster Rocket System, Counterfire Defence System, 4x Destroyer Missile, Drone Controller, Multi-tracker, Pulse Blastcannon, 2x Smart Missile System, Target Lock, Thunderous Footfalls, Twin Airbursting Fragmentation Projector
+
+++ Patrol Detachment 0CP (T'au Empire) [65 PL, 10CP, 1,154pts] ++
+
++ Configuration +
+
+Battle Size [12CP]: 3. Strike Force (101-200 Total PL / 1001-2000 Points) 
+
+Detachment Command Cost
+
+Gametype: Matched
+
+Sept Choice: Bork'an Sept
+
++ Stratagems +
+
+Stratagem: Emergency Dispensation [-1CP]: Additional Relics
+
++ No Force Org Slot +
+
+Kroot Hounds [1 PL, 24pts]
+. 4x Kroot Hound: 4x Ripping Fangs
+
++ HQ +
+
+Commander in Coldstar Battlesuit [10 PL, 202pts]: 1. Precision of the Hunter, Alternating Fusion Blaster, Fusion Blaster, High-output Burst Cannon, Plasma Rifle, Plasma Rifle, Target Lock, Warlord
+. Marker Drone: Markerlight
+. Shield Drone: Shield Generator
+
+Ethereal [5 PL, -1CP, 87pts]: 2. Sense of Stone, 5. Exemplar of the Kauyon, 6. Wisdom of the Guides, Honour Blade, Hover Drone, Stratagem: Promising Pupil, The Humble Stave
+. Marker Drone: Markerlight
+. Shield Drone: Shield Generator
+
++ Troops +
+
+Kroot Carnivores [3 PL, 60pts]
+. 10x Kroot: 10x Kroot Rifle, 10x Quill Grenades
+
++ Elites +
+
+Crisis Battlesuits [22 PL, 346pts]
+. Crisis Shas'ui: Cyclic Ion Blaster, Plasma Rifle, Plasma Rifle, Target Lock
+. Crisis Shas'ui: Cyclic Ion Blaster, Plasma Rifle, Plasma Rifle, Target Lock
+. Crisis Shas'ui: Cyclic Ion Blaster, Plasma Rifle, Plasma Rifle, Target Lock
+. Crisis Shas'ui: Cyclic Ion Blaster, Plasma Rifle, Plasma Rifle, Target Lock
+. Crisis Shas'vre: Cyclic Ion Blaster, Iridium battlesuit, Plasma Rifle, Plasma Rifle, Stimm Injectors, Target Lock
+. 2x Marker Drone: 2x Markerlight
+. 3x Shield Drone: 3x Shield Generator
+
+Stealth Battlesuits [4 PL, 80pts]: Homing Beacon
+. 2x Stealth Shas'ui w/ Burst Cannon: 2x Burst Cannon
+. Stealth Shas'vre: Burst Cannon
+
++ Heavy Support +
+
+Broadside Battlesuits [5 PL, 75pts]
+. Broadside Shas'vre: Advanced Targeting System, Crushing Bulk, Heavy Rail Rifle, Stabilised Optics
+
+Riptide Battlesuit [15 PL, 280pts]: 2x Plasma Rifle, Ion Accelerator, Multi-tracker, Riptide Fists, Target Lock, Velocity Tracker
+. 2x Shielded Missile Drone: 2x Missile Pod, 2x Shield Generator
+
+++ Total: [82 PL, 9CP, 1,499pts] ++
+
+Created with BattleScribe (https://battlescribe.net)
+                </code>
+            </pre>
+        </main>
+        
+    </p>
+    </body>
+</html>
