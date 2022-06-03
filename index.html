@@ -112,6 +112,15 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+
+        <script>
+            document.addEventListener('touchstart', {}); 
+            function playMidi() {
+                document.getElementById('musak').play()
+                document.removeEventListener('touchstart', playMidi);
+            }
+            document.addEventListener('touchstart', playMidi)
+        </script>
     </head>
     <body>
         <header>
@@ -127,7 +136,6 @@
             <audio id="musak" controls loop autoplay>
                 <source src="https://powens.github.io/img/wings.mp3" type="audio/mp3" />
             </audio>
-            <button onClick="document.getElementById('musak').play()">boop</button>
         </p>
 
         <p class="tauFont larger sotek">If anyone figures this out I will buy them a beer</p>
