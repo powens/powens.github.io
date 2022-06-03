@@ -113,6 +113,14 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+        <script>
+            function playMidi() {
+                MIDIjs.play('https://powens.github.io/img/wings.mid');
+                // document.body.removeEventListener('touchstart', playMidi);
+            }
+            document.getElementById("play").addEventListener('click', playMidi);
+            // document.body.addEventListener('touchstart', playMidi);
+        </script>
     </head>
     <body>
         <header>
@@ -125,8 +133,14 @@
         </div>
 
         <p>
-            <button onClick="playMidi()"><img src="https://powens.github.io/img/play.svg" width="64" height="64"/></button>
+            <button id="play"><img src="https://powens.github.io/img/play.svg" width="64" height="64"/></button>
             <button onClick="MIDIjs.stop();"><img src="https://powens.github.io/img/stop.svg" width="64" height="64"/></button>
+        </p>
+
+        <p>
+            <audio controls>
+                <source src="https://powens.github.io/img/wings.mp3" type="audio/mp3" />
+            </audio>
         </p>
 
         <p class="tauFont larger sotek">If anyone figures this out I will buy them a beer</p>
@@ -138,8 +152,6 @@
 
         <p class="tauFont larger sotek">No really I will</p>
 
-        <div id="status"></div>
-        
         <h2>Army</h2>
         <main>
             <pre>
@@ -227,22 +239,4 @@ Created with BattleScribe (https://battlescribe.net)
     </p>
     
     </body>
-
-    <script>
-        function playMidi() {
-            console.log(MIDIjs.play('https://powens.github.io/img/wings.mid'));
-            // document.body.removeEventListener('touchstart', playMidi);
-        }
-        // document.body.addEventListener('touchstart', playMidi);
-
-
-
-        function display_message(mes) {
-            document.getElementById('status').innerHTML = mes;
-        };
-
-        // Set the function as message callback
-        MIDIjs.message_callback = display_message;
-
-    </script>
 </html>
