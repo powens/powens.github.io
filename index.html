@@ -16,10 +16,10 @@
 
             @font-face {
                 font-family: TauFont;
-                src: url(font/Tau.otf);
+                src: url(https://powens.github.io/font/Tau.otf);
             }
             body {
-                background-image: url('img/bg1.gif');
+                background-image: url('https://powens.github.io/img/bg1.gif');
                 background-repeat: repeat;
                 background-attachment: fixed;
                 background-size: auto;
@@ -74,6 +74,11 @@
                 font-size: 48px;
             }
 
+            h2 {
+                text-shadow: 2px 2px #aaa;
+                font-size: 42px;
+            }
+
             pre {
             overflow-x: auto;
             white-space: pre-wrap;
@@ -104,43 +109,38 @@
                 margin-top: 20px;
             }
         </style>
-        <script type='text/javascript' src='//www.midijs.net/lib/midi.js'></script>
+        <script type='text/javascript' src='https://www.midijs.net/lib/midi.js'></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-        <script>
-            document.addEventListener('touchstart', {}); 
-            // function playMidi() {
-            //     MIDIjs.play('img/wings.mid');
-            //     document.removeEventListener('touchstart', playMidi);
-            // }
-            // document.addEventListener('touchstart', playMidi)
-        </script>
     </head>
     <body>
         <header>
-            <img src="img/crisis.gif" class="crisisImg" />
+            <img src="https://powens.github.io/img/crisis.gif" class="crisisImg" />
             <h1>Esav'o Hunter Cadre</h1>
-            <img src="img/crisis.gif" class="crisisImg" />
+            <img src="https://powens.github.io/img/crisis.gif" class="crisisImg" />
         </header>
         <div class="hitWrapper">
             <img src="http://profile-counter.glitch.me/tyc-list-1/count.svg" class="hitCounter"/>
         </div>
 
         <p>
-            <button onClick="MIDIjs.play('img/wings.mid');"><img src="img/play.svg" width="64" height="64"/></button>
-            <button onClick="MIDIjs.stop();"><img src="img/stop.svg" width="64" height="64"/></button>
+            <button onClick="playMidi()"><img src="https://powens.github.io/img/play.svg" width="64" height="64"/></button>
+            <button onClick="MIDIjs.stop();"><img src="https://powens.github.io/img/stop.svg" width="64" height="64"/></button>
         </p>
 
         <p class="tauFont larger sotek">If anyone figures this out I will buy them a beer</p>
 
         <p>
-            <img src="img/drone.gif" style="width: 200px;" />
-            <img src="img/dow.gif" style="width: 465px;" />
+            <img src="https://powens.github.io/img/drone.gif" style="width: 200px;" />
+            <img src="https://powens.github.io/img/dow.gif" style="width: 465px;" />
         </p>
 
         <p class="tauFont larger sotek">No really I will</p>
+
+        <div id="status"></div>
         
+        <h2>Army</h2>
         <main>
             <pre>
                 <code>
@@ -225,5 +225,25 @@ Created with BattleScribe (https://battlescribe.net)
         </main>
         
     </p>
+    
     </body>
+
+    <script>
+        function playMidi() {
+            console.log( MIDIjs.get_audio_status());
+            MIDIjs.play('https://powens.github.io/img/wings.mid');
+            document.body.removeEventListener('touchstart', playMidi);
+        }
+        document.body.addEventListener('touchstart', playMidi);
+
+
+
+        function display_message(mes) {
+            document.getElementById('status').innerHTML = mes;
+        };
+
+        // Set the function as message callback
+        MIDIjs.message_callback = display_message;
+
+    </script>
 </html>
