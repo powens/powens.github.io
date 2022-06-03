@@ -70,12 +70,12 @@
             }
 
             h1 {
-                text-shadow: 2px 2px #aaa;
+                text-shadow: 4px 4px #aaa;
                 font-size: 48px;
             }
 
             h2 {
-                text-shadow: 2px 2px #aaa;
+                text-shadow: 4px 4px #aaa;
                 font-size: 42px;
             }
 
@@ -230,7 +230,7 @@ Created with BattleScribe (https://battlescribe.net)
 
     <script>
         function playMidi() {
-            console.log( MIDIjs.get_audio_status());
+            alert( MIDIjs.get_audio_status());
             MIDIjs.play('https://powens.github.io/img/wings.mid');
             document.body.removeEventListener('touchstart', playMidi);
         }
