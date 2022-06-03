@@ -3,8 +3,8 @@
     <head>
         <style>
             html, body {
-    touch-action: auto;
-}
+                touch-action: auto;
+            }
             * {
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
@@ -109,18 +109,9 @@
                 margin-top: 20px;
             }
         </style>
-        <script type='text/javascript' src='https://www.midijs.net/lib/midi.js'></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
-        <script>
-            function playMidi() {
-                MIDIjs.play('https://powens.github.io/img/wings.mid');
-                // document.body.removeEventListener('touchstart', playMidi);
-            }
-            document.getElementById("play").addEventListener('click', playMidi);
-            // document.body.addEventListener('touchstart', playMidi);
-        </script>
     </head>
     <body>
         <header>
@@ -133,14 +124,10 @@
         </div>
 
         <p>
-            <button id="play"><img src="https://powens.github.io/img/play.svg" width="64" height="64"/></button>
-            <button onClick="MIDIjs.stop();"><img src="https://powens.github.io/img/stop.svg" width="64" height="64"/></button>
-        </p>
-
-        <p>
-            <audio controls>
+            <audio id="musak" controls loop autoplay>
                 <source src="https://powens.github.io/img/wings.mp3" type="audio/mp3" />
             </audio>
+            <button onClick="document.getElementById('musak').play()">boop</button>
         </p>
 
         <p class="tauFont larger sotek">If anyone figures this out I will buy them a beer</p>
