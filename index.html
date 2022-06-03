@@ -229,13 +229,11 @@ Created with BattleScribe (https://battlescribe.net)
     </body>
 
     <script>
-        alert( MIDIjs.get_audio_status());
         function playMidi() {
-            alert( MIDIjs.get_audio_status());
-            MIDIjs.play('https://powens.github.io/img/wings.mid');
-            document.body.removeEventListener('touchstart', playMidi);
+            console.log(MIDIjs.play('https://powens.github.io/img/wings.mid'));
+            // document.body.removeEventListener('touchstart', playMidi);
         }
-        document.body.addEventListener('touchstart', playMidi);
+        // document.body.addEventListener('touchstart', playMidi);
 
 
 
