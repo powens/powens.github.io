@@ -236,7 +236,6 @@ Expected: FAIL — Hugo reports no configuration file / unable to locate config.
 theme = "blowfish"
 baseURL = "https://powens.github.io/"
 defaultContentLanguage = "en"
-languageCode = "en-CA"
 
 enableRobotsTXT = true
 enableEmoji = true
@@ -266,6 +265,8 @@ buildFuture = false
   [caches.images]
     dir = ":cacheDir/images"
 ```
+
+Note on `languageCode`: this key is deliberately absent from `hugo.toml`. Hugo 0.158 deprecated it and it was inert for this site — `locale = "en"` in `languages.en.toml` is what actually drives `<html lang>` and the RSS feed's language. Do not re-add `languageCode`; it has no effect and only invites drift between two sources of truth.
 
 Note on `[taxonomies]`: Blowfish's own default declares four taxonomies (`tag`, `category`, `author`, `series`). This site declares only `tags`, per the spec's scope. If the build in Step 7 fails with an error naming `categories`, `authors`, or `series`, restore Blowfish's full block rather than debugging templates:
 
@@ -451,16 +452,16 @@ Title, tagline, tags-only taxonomy, profile homepage, GitHub and RSS links."
 - Consumes: the `tags` taxonomy and `mainSections = ["posts"]` from Task 3.
 - Produces: `public/posts/hello-world/index.html`, `public/tags/meta/index.html`, and `public/index.xml`. Task 6's live-site check asserts on these same paths.
 
-- [ ] **Step 1: Verify tags and feed output do not exist yet (the failing condition)**
+- [ ] **Step 1: Verify the tag term page and posts section do not exist yet (the failing condition)**
 
 ```bash
 rm -rf public
 hugo build >/dev/null
-ls public/tags 2>&1
 ls public/posts 2>&1
+ls public/tags/meta 2>&1
 ```
 
-Expected: both report `No such file or directory`. Hugo emits no taxonomy or section pages when no content uses them, which is exactly why the assertions in Step 7 are meaningful.
+Expected: both report `No such file or directory`. Note that `public/tags` itself already exists at this point — Hugo generates an empty taxonomy list page purely because `[taxonomies] tag = "tags"` is declared in `config/_default/hugo.toml`, regardless of whether any content uses it. That list page is not a meaningful fail-first signal, so this check targets the *term* page (`public/tags/meta`) instead, alongside the `posts` section, which genuinely does not exist until content is added — which is exactly why the assertions in Step 7 are meaningful.
 
 - [ ] **Step 2: Create `archetypes/default.md`**
 
