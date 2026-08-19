@@ -1,0 +1,13 @@
+# Hugo build output
+public/
+resources/_gen/
+.hugo_build.lock
+
+# Hugo module / theme caches
+.hugo/
+
+# SDD process scratch
+.superpowers/
+
+# macOS
+.DS_Store
