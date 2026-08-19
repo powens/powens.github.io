@@ -1,0 +1,21 @@
+disabled = false
+locale = "en"
+label = "English"
+weight = 1
+title = "Patrick Owens"
+
+[params]
+  displayName = "EN"
+  isoCode = "en"
+  rtl = false
+  dateFormat = "2 January 2006"
+  description = "Software, radio, and small plastic soldiers."
+  copyright = "© Patrick Owens"
+
+[params.author]
+  name = "Patrick Owens"
+  headline = "Software, radio, and small plastic soldiers."
+  links = [
+    { github = "https://github.com/powens" },
+    { rss = "/index.xml" },
+  ]

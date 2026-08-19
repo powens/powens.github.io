@@ -1,0 +1,16 @@
+# -- Main menu (header) --
+[[main]]
+  name = "Posts"
+  pageRef = "posts"
+  weight = 10
+
+[[main]]
+  name = "Tags"
+  pageRef = "tags"
+  weight = 20
+
+# -- Footer menu --
+[[footer]]
+  name = "RSS"
+  url = "/index.xml"
+  weight = 10
