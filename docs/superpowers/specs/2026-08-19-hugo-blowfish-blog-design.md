@@ -20,7 +20,7 @@ and a feed, deployed automatically on push.
 | Theme | Blowfish v3.1.0 | MIT, ~2.9k stars, most actively developed of the candidates considered (Blowfish, PaperMod, Congo). Requires Hugo >= 0.162.0. |
 | Theme install | Git submodule at `themes/blowfish`, pinned to tag `v3.1.0` | Blowfish's own docs recommend submodule over Hugo Modules. Keeps theme and content cleanly separated and updatable. |
 | Old site | Deleted from the working tree | Recoverable from git history at commit `a4fa12b`. `LICENSE` retained, `README.md` rewritten. |
-| Scope at launch | Posts index, post pages, tags, Atom/RSS feed | No `/about/` page. Trivial to add later. |
+| Scope at launch | Posts index, post pages, tags, RSS feed | No `/about/` page. Trivial to add later. |
 
 ## Site identity
 
@@ -72,13 +72,19 @@ modifications:
 
 1. **Trigger on `master`.** This repo's default branch is `master`; the upstream
    sample uses `main`.
-2. **`submodules: recursive` on checkout.** Required for the theme to exist at
-   build time. Without it the build fails with a missing-theme error.
+2. **`TZ` changed to `America/Vancouver`.** The upstream sample sets
+   `TZ: Europe/Oslo`; this is set to the maintainer's local timezone instead.
 3. **Drop the Dart Sass install step.** Verified unnecessary: Blowfish contains
    zero `.scss` files and ships precompiled Tailwind CSS in
    `assets/css/compiled/`. Hugo extended is likewise not required.
-4. **Drop `setup-go` and `setup-node`.** Go is needed only for the Hugo Modules
-   install path; Node only for themes that build their own CSS. Neither applies.
+4. **Drop `setup-go` and `setup-node`** (and the `npm ci` step that went with
+   Node). Go is needed only for the Hugo Modules install path; Node only for
+   themes that build their own CSS. Neither applies.
+
+`submodules: recursive` on checkout is not a deviation — Hugo's upstream sample
+workflow already includes it — but it is worth calling out as functionally
+required here: without it the theme submodule is absent at build time and the
+build fails with a missing-theme error.
 
 Modifications 3 and 4 are the only ones carrying risk. Both are cheap to reverse
 and are validated before push by the local build; if CI disagrees with the local
@@ -93,9 +99,25 @@ sync with the repository's Pages configuration.
 
 ## Manual steps (owner-performed, not automated)
 
-Repo Settings -> Pages -> Source -> `GitHub Actions`. Required before the first
-deploy can succeed. This cannot be reliably scripted and must be done by the
-repository owner.
+**Order matters: flip the Pages source before pushing `master`, not after.**
+
+Repo Settings -> Pages -> Source -> `GitHub Actions`. This cannot be reliably
+scripted and must be done by the repository owner, and it must happen *before*
+this branch's `master` is pushed. As of this writing the live repo's Pages
+config still reports `build_type: legacy` with source branch `master`, path
+`/` — i.e. the switch has not yet been made.
+
+Getting the order backwards has two consequences, not one:
+
+1. The `deploy` job fails outright — GitHub rejects an artifact deployment
+   while `build_type` is still `legacy`. The `build` job passes, so this only
+   surfaces after the push, in the Actions run.
+2. In the interim, `https://powens.github.io` starts returning 404. The legacy
+   builder keeps rebuilding `master`'s root on every push, and this branch
+   deletes the root `index.html` (see commit `975393d`) in favor of the Hugo
+   site under `public/`, so the legacy build has nothing to serve.
+
+Both are avoided by doing the Pages source switch first.
 
 ## Verification
 
