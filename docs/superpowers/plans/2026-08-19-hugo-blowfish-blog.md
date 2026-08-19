@@ -697,11 +697,13 @@ jobs:
 
 - [ ] **Step 3: Verify the YAML parses**
 
+Note on tooling: this step originally called `python3 -c "import yaml, ..."`, but PyYAML is not installed in this environment (`python3 -c "import yaml"` raises `ModuleNotFoundError`). Ruby with psych is available instead and proves the same three things — the file parses, it exposes jobs `build` and `deploy`, and it triggers on branch `master` — so the check below uses that.
+
 ```bash
-python3 -c "import yaml,sys; d=yaml.safe_load(open('.github/workflows/hugo.yaml')); print('jobs:', list(d['jobs'])); print('branches:', d[True]['push']['branches'])"
+ruby -ryaml -e 'd=YAML.load_file(".github/workflows/hugo.yaml"); puts "jobs: #{d["jobs"].keys}"; puts "branches: #{d[true]["push"]["branches"]}"'
 ```
 
-Expected: `jobs: ['build', 'deploy']` and `branches: ['master']`. (PyYAML parses the bare `on:` key as boolean `True`; that is a quirk of the parser, not a problem with the file.)
+Expected: `jobs: ["build", "deploy"]` and `branches: ["master"]`. (Both PyYAML and ruby's psych parse the bare `on:` key as boolean `true`/`True`; that is a quirk of the parser, not a problem with the file, which is why the command indexes `d[true]`.)
 
 - [ ] **Step 4: Verify the four intended deviations from upstream**
 
