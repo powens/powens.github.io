@@ -1,0 +1,174 @@
+{{/*
+  Site-level additions to Blowfish, loaded through the theme's extend-footer
+  hook (themes/blowfish/layouts/partials/footer.html). Two behaviours the
+  theme does not provide:
+
+    1. A focus trap for the mobile menu. The dialog declares
+       role="dialog" aria-modal="true", but it is driven entirely by a CSS
+       checkbox, so Tab walks straight out of it into the page behind — which
+       the overlay covers at 97% opacity. menu-a11y.js already handles Escape,
+       aria-expanded and the scroll lock; only containment is missing.
+
+    2. An empty state for search. On a query with no matches the theme empties
+       #search-results and shows nothing at all, which is indistinguishable
+       from a broken search.
+
+  The theme's own scripts are bundled with `defer`, so this runs on
+  DOMContentLoaded to be sure they have executed first.
+
+  Styling uses only utility classes the theme already emits (search.js builds
+  result rows from them) — Blowfish ships a precompiled, frozen Tailwind
+  build, so classes it does not already use would not exist.
+*/}}
+<script>
+  (function () {
+    "use strict";
+
+    var NO_RESULTS = {{ i18n "search.no_results" | default "No results for “%s”." }};
+
+    function trapMobileMenuFocus() {
+      var toggle = document.getElementById("mobile-menu-toggle");
+      var dialog = document.getElementById("mobile-menu-dialog");
+      if (!toggle || !dialog) return;
+
+      var SELECTOR = [
+        'a[href]',
+        'button:not([disabled])',
+        'input:not([disabled]):not([type="hidden"])',
+        'select:not([disabled])',
+        'textarea:not([disabled])',
+        '[tabindex]:not([tabindex="-1"])',
+      ].join(",");
+
+      function focusable() {
+        return Array.prototype.filter.call(dialog.querySelectorAll(SELECTOR), function (el) {
+          if (window.getComputedStyle(el).visibility === "hidden") return false;
+          return el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0;
+        });
+      }
+
+      // Move focus into the dialog on open. Without this it stays on the opener
+      // label, which the overlay now covers; menu-a11y.js returns it there on
+      // Escape. Retried across frames rather than attempted once: the dialog is
+      // revealed by a CSS transition driven off the checkbox, so right after the
+      // change event its style has not been recalculated and focus() is still a
+      // no-op. Capped so a menu with nothing focusable in it cannot spin.
+      function focusFirstItem(frames) {
+        if (!toggle.checked) return;
+        var items = focusable();
+        if (items.length) {
+          items[0].focus();
+          if (document.activeElement === items[0]) return;
+        }
+        if (frames < 30) {
+          window.requestAnimationFrame(function () {
+            focusFirstItem(frames + 1);
+          });
+        }
+      }
+
+      toggle.addEventListener("change", function () {
+        if (toggle.checked) focusFirstItem(0);
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key !== "Tab" || !toggle.checked) return;
+        var items = focusable();
+        if (!items.length) return;
+        var first = items[0];
+        var last = items[items.length - 1];
+
+        if (!dialog.contains(document.activeElement)) {
+          event.preventDefault();
+          (event.shiftKey ? last : first).focus();
+        } else if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      });
+    }
+
+    function addSearchEmptyState() {
+      var wrapper = document.getElementById("search-wrapper");
+      var input = document.getElementById("search-query");
+      var output = document.getElementById("search-results");
+      if (!wrapper || !input || !output) return;
+
+      // Sits outside #search-results so the theme's `output.innerHTML = ""`
+      // does not wipe it; this script owns showing and hiding it.
+      var message = document.createElement("p");
+      message.id = "search-no-results";
+      message.className = "px-3 py-2 text-sm italic text-neutral-500 dark:text-neutral-400";
+      message.setAttribute("role", "status");
+      message.setAttribute("aria-live", "polite");
+      message.hidden = true;
+      output.insertAdjacentElement("afterend", message);
+
+      var pending = null;
+
+      function hide() {
+        message.hidden = true;
+        message.textContent = "";
+      }
+
+      function evaluate(attempt) {
+        var term = input.value.trim();
+        if (!term || output.children.length > 0) {
+          hide();
+          return;
+        }
+        // executeQuery() bails out early while the Fuse index is still being
+        // fetched, and does not re-run once it lands — so an empty #search-results
+        // here may mean "still loading" rather than "no matches". Wait for the
+        // index, then ask the theme to run the query again before concluding
+        // anything.
+        if (!window.fuse) {
+          if (attempt < 20) {
+            pending = window.setTimeout(function () {
+              evaluate(attempt + 1);
+            }, 100);
+          }
+          return;
+        }
+        if (attempt > 0 && typeof window.executeQuery === "function") {
+          window.executeQuery(term);
+          if (output.children.length > 0) {
+            hide();
+            return;
+          }
+        }
+        message.textContent = NO_RESULTS.replace("%s", term);
+        message.hidden = false;
+      }
+
+      // The theme assigns input.onkeyup directly, so this listener is additive
+      // and runs after it, once #search-results has been rewritten.
+      input.addEventListener("keyup", function () {
+        window.clearTimeout(pending);
+        evaluate(0);
+      });
+
+      // hideSearch() flips the wrapper's inline visibility; clear up after it.
+      new MutationObserver(function () {
+        if (wrapper.style.visibility === "hidden") {
+          window.clearTimeout(pending);
+          hide();
+        }
+      }).observe(wrapper, { attributes: true, attributeFilter: ["style"] });
+    }
+
+    function init() {
+      trapMobileMenuFocus();
+      addSearchEmptyState();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  })();
+</script>

@@ -1,0 +1,5 @@
+# Site-level string additions. Hugo merges this over the theme's i18n/en.yaml,
+# so only new or overridden keys belong here.
+search:
+  # %s is the search term the visitor typed.
+  no_results: "No results for “%s”."

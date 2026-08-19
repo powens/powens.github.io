@@ -25,3 +25,13 @@ a[href^="/tags/"] span[class*="rounded-md"] {
   align-items: center;
   min-height: 24px;
 }
+
+/* The scroll-to-top control is toggled by scroll-to-top.js purely through
+   opacity, so at the top of the page it is invisible but still focusable —
+   a keyboard tab stop on a control nobody can see. (Right now every page is
+   shorter than the viewport, so it is permanently in that state.)
+   visibility:hidden also removes it from the tab order; the JS swaps
+   opacity-0 for opacity-100 on scroll, which drops this rule again. */
+#scroll-to-top.opacity-0 {
+  visibility: hidden;
+}

@@ -12,6 +12,12 @@ disableTextInHeader = false
 
 fingerprintAlgorithm = "sha512"
 
+# Fallback card image for pages with no featured image of their own.
+defaultSocialImage = "img/og-default.png"
+
+[sitemap]
+  excludedKinds = []
+
 [header]
   layout = "basic"
 
@@ -30,6 +36,7 @@ fingerprintAlgorithm = "sha512"
   showMoreLinkDest = "/posts/"
 
 [article]
+  externalLinkForceNewTab = false
   showDate = true
   showAuthor = false
   showBreadcrumbs = false
