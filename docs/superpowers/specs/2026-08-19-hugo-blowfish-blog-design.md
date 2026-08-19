@@ -93,28 +93,9 @@ sync with the repository's Pages configuration.
 
 ## Manual steps (owner-performed, not automated)
 
-1. **Required before the first deploy succeeds:** repo Settings -> Pages ->
-   Source -> `GitHub Actions`. This cannot be reliably scripted and must be done
-   by the repository owner.
-2. **Deferred, at the owner's discretion:** the padraig.io cutover (below).
-
-## padraig.io cutover (out of scope, documented for later)
-
-This site is intended to replace `https://www.padraig.io`. That cutover is
-explicitly **not** part of this work: no DNS record is touched and no live site
-is modified.
-
-When it is done later, the sequence is:
-
-1. Add the custom domain under Settings -> Pages.
-2. Point the padraig.io DNS records at GitHub Pages.
-3. Enable "Enforce HTTPS" once the certificate is provisioned.
-
-No configuration change is needed in this repo at cutover, because
-`actions/configure-pages` reads the custom domain from repository settings and
-feeds it into the injected `baseURL` automatically. A `static/CNAME` file is
-**not** required for Actions-based deployment; it applies to branch-based
-publishing.
+Repo Settings -> Pages -> Source -> `GitHub Actions`. Required before the first
+deploy can succeed. This cannot be reliably scripted and must be done by the
+repository owner.
 
 ## Verification
 
@@ -134,6 +115,6 @@ Steps 5 and 6 depend on the owner completing manual step 1 first.
 ## Out of scope
 
 - An `/about/` page.
-- Migrating any existing content from padraig.io.
-- The padraig.io DNS cutover.
+- Any custom domain. The site lives at `https://powens.github.io` and no DNS is
+  touched.
 - Preserving the old Tau page at a sub-URL. It lives in git history only.
