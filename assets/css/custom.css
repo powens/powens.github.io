@@ -1,0 +1,27 @@
+/* Site overrides. Blowfish's head.html appends this file last in the CSS
+   bundle, so these rules win without touching themes/blowfish/. Plain CSS,
+   not Tailwind utilities — the theme ships a precompiled, frozen Tailwind
+   build, so utility classes it doesn't already use would not exist. */
+
+/* The theme sizes the mobile header controls from their 18px icons, leaving
+   an 18x18 tap target against the ~44px minimum in WCAG 2.5.5 and Apple's
+   HIG. Expand the hit area, and drop the row gap so the icons keep roughly
+   their current visual spacing instead of drifting apart. */
+.mobile-header-row {
+  gap: 0;
+}
+
+.mobile-header-row > button,
+.mobile-header-row > label[for="mobile-menu-toggle"] {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Tag pills are inline links, so the applicable floor is WCAG 2.5.8's 24px,
+   not 44px. The theme renders them 20px tall. Targets the pill's own span
+   (rounded-md + border) so the header's "Tags" nav link is unaffected. */
+a[href^="/tags/"] span[class*="rounded-md"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}

@@ -1,5 +1,5 @@
 colorScheme = "blowfish"
-defaultAppearance = "dark"
+defaultAppearance = "light"
 autoSwitchAppearance = true
 
 enableSearch = true
@@ -44,6 +44,7 @@ fingerprintAlgorithm = "sha512"
 
 [list]
   showSummary = true
+  constrainItemsWidth = true
   groupByYear = true
 
 [taxonomy]
