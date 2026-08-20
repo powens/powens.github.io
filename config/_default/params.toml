@@ -8,7 +8,13 @@ enableCodeCopy = true
 mainSections = ["posts"]
 
 disableImageOptimization = false
-disableTextInHeader = false
+
+# The profile homepage already prints the name as its <h1>; printing it in
+# the header too said it twice on the page it matters most. The logo below
+# keeps a home link in the header (Blowfish gives it an sr-only site title),
+# which disabling the text alone would have removed entirely.
+disableTextInHeader = true
+logo = "img/logo.svg"
 
 fingerprintAlgorithm = "sha512"
 

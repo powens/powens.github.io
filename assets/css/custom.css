@@ -35,3 +35,12 @@ a[href^="/tags/"] span[class*="rounded-md"] {
 #scroll-to-top.opacity-0 {
   visibility: hidden;
 }
+
+/* Blowfish sizes inlined SVG logos at 5rem (themes/blowfish/assets/css/main.css
+   `.logo svg`), which is taller than the header row itself — the desktop nav is
+   h-12 and the mobile row h-14. Scale the mark to sit level with the nav text.
+   `header` raises specificity above the theme rule, so load order is irrelevant. */
+header .logo svg {
+  height: 2rem;
+  width: 2rem;
+}

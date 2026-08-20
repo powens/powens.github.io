@@ -14,7 +14,14 @@
     {{ partial "recent-articles/list.html" . }}
   {{ end }}
 
-  {{ if .Site.Params.homepage.showMoreLink | default false }}
+  {{/* Site override: the theme renders this link whenever showMoreLink is set,
+    without ever checking that there is in fact more to show — so a site with
+    one post offered "Show More" to a page listing that same post. Count the
+    unpaginated set, which is what "are there more posts?" actually asks;
+    calling .Paginate a second time here would risk a duplicate-invocation
+    error for no benefit. */}}
+  {{ $allArticles := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+  {{ if and (.Site.Params.homepage.showMoreLink | default false) (gt (len $allArticles) $recentArticles) }}
     {{ if index .Site.Params.homepage "showRecentItems" }}
       {{ $showMoreLinkDest = .Site.Params.homepage.showMoreLinkDest }}
     {{ end }}
