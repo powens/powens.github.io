@@ -47,6 +47,19 @@
         });
       }
 
+      // The search modal can open on top of an open menu (the "/" shortcut still
+      // fires), and it has its own Tab trap in the theme's search.js. Ours is
+      // registered on DOMContentLoaded, so it runs second and would win the
+      // preventDefault race, throwing focus behind the search overlay. Reading
+      // the wrapper's computed visibility rather than search.js's `searchVisible`
+      // keeps this independent of how the theme bundles its scripts; search.js
+      // sets that inline style itself in showSearch/hideSearch.
+      function searchIsOpen() {
+        var searchWrapper = document.getElementById("search-wrapper");
+        if (!searchWrapper) return false;
+        return window.getComputedStyle(searchWrapper).visibility === "visible";
+      }
+
       // Move focus into the dialog on open. Without this it stays on the opener
       // label, which the overlay now covers; menu-a11y.js returns it there on
       // Escape. Retried across frames rather than attempted once: the dialog is
@@ -72,7 +85,7 @@
       });
 
       document.addEventListener("keydown", function (event) {
-        if (event.key !== "Tab" || !toggle.checked) return;
+        if (event.key !== "Tab" || !toggle.checked || searchIsOpen()) return;
         var items = focusable();
         if (!items.length) return;
         var first = items[0];

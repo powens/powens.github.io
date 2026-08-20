@@ -16,12 +16,29 @@
 
   {{/* Site override: the theme renders this link whenever showMoreLink is set,
     without ever checking that there is in fact more to show — so a site with
-    one post offered "Show More" to a page listing that same post. Count the
-    unpaginated set, which is what "are there more posts?" actually asks;
-    calling .Paginate a second time here would risk a duplicate-invocation
-    error for no benefit. */}}
+    one post offered "Show More" to a page listing that same post. Compare the
+    full set against what the feed above actually displayed; re-deriving the
+    total from .Site.RegularPages rather than calling .Paginate a second time,
+    which would risk a duplicate-invocation error for no benefit.
+
+    The feed is `first $recentArticles` over a *paginated* set, so its length is
+    capped twice — by showRecentItems and by pagerSize, whichever is smaller.
+    Gating on showRecentItems alone gets this wrong in the dangerous direction:
+    at showRecentItems 20 / pagerSize 10, a 15-post site would show 10, evaluate
+    15 > 20 as false, drop the link, and strand 5 posts.
+
+    pagerSize is read off .Paginator rather than the config, because Hugo does
+    not expose it under .Site.Config. That is safe here and not a second
+    invocation: all three view partials above paginate this same set, so by the
+    time this runs the paginator is already built and .Paginator just returns
+    it. */}}
   {{ $allArticles := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
-  {{ if and (.Site.Params.homepage.showMoreLink | default false) (gt (len $allArticles) $recentArticles) }}
+  {{ $shown := $recentArticles }}
+  {{ $pagerSize := .Paginator.PagerSize }}
+  {{ if and $pagerSize (lt $pagerSize $shown) }}
+    {{ $shown = $pagerSize }}
+  {{ end }}
+  {{ if and (.Site.Params.homepage.showMoreLink | default false) (gt (len $allArticles) $shown) }}
     {{ if index .Site.Params.homepage "showRecentItems" }}
       {{ $showMoreLinkDest = .Site.Params.homepage.showMoreLinkDest }}
     {{ end }}
