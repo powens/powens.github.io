@@ -44,3 +44,65 @@ header .logo svg {
   height: 2rem;
   width: 2rem;
 }
+
+/* The 404 quote attribution is the one piece of readable copy on the site that
+   misses WCAG AA: the theme sets it text-neutral-400 in light and
+   text-neutral-500 in dark (themes/blowfish/layouts/404.html), i.e. it gets
+   dimmer on the background it already contrasts least against — 2.56:1 light
+   and 3.07:1 dark, where 14px semibold needs 4.5:1. Swapping the two shades
+   keeps the muted look the theme wants and clears the bar both ways.
+
+   Keyed off `html.dark` rather than a prefers-color-scheme query, because that
+   is the only switch the theme has: its compiled Tailwind contains no
+   prefers-color-scheme rules at all, and appearance.js decides the appearance
+   by toggling `.dark` on the root element. */
+#quote-404-source {
+  color: rgb(100 116 139); /* neutral-500 on white: 4.76:1 */
+}
+
+html.dark #quote-404-source {
+  color: rgb(148 163 184); /* neutral-400 on neutral-800: 5.71:1 */
+}
+
+/* Article reading column.
+
+   Tailwind's `prose` drops body copy to 16px while the site's own base is 18px,
+   so the text you came to read was the smallest on the page. Worse, the theme
+   sizes the column with `max-w-prose` (65ch), which resolves against each
+   element's own font-size: 736px for the 18px header, 655px for the 16px body.
+   The title and the paragraphs beneath it therefore ended on different right
+   edges.
+
+   Matching the base size is the whole fix — at 18px all three of header, body
+   and footer resolve 65ch to the same 736px, which is also the band the
+   homepage profile and the /posts/ list items occupy. Nothing here sets an
+   explicit width; pinning one would only re-break that agreement the next time
+   the type scale moves. */
+.article-content {
+  font-size: 1.125rem;
+}
+
+/* Centre the page on one column.
+
+   Blowfish never pairs its `max-w-prose` column primitive with `mx-auto`, so
+   the reading column sat flush against the left edge of a content area that is
+   itself centred, while the header nav and footer spanned that area's full
+   width. At 1440 that put the column's centreline on 576 under a header and
+   footer centred on 720 — 144px of drift, and the reason the page read as
+   knocked off-centre.
+
+   Fixing this on <main> works but stacks a third gutter: body already insets
+   the page twice, once via `m-auto` under `max-w-7xl` and again via
+   `px-6 sm:px-14 md:px-24 lg:px-32`, so a centred <main> added 144px more and
+   left the content indented under its own full-width header.
+
+   Constrain the body instead and the column has a single source of truth.
+   Everything inside — header, main, footer — inherits it and lines up, with no
+   per-element overrides to keep in sync. 62rem is the theme's lg gutter
+   (2 x 8rem) plus the 46rem the `max-w-prose` children already resolve to at
+   the 18px base, and box-sizing is border-box theme-wide, so the content box
+   lands on exactly that 46rem. Below lg the responsive padding keeps its own
+   smaller gutters and the column simply goes fluid. */
+body {
+  max-width: 62rem;
+}

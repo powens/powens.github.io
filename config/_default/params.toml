@@ -45,7 +45,12 @@ defaultSocialImage = "img/og-default.png"
   externalLinkForceNewTab = false
   showDate = true
   showAuthor = false
-  showBreadcrumbs = false
+  # A post's only route back used to be the 32px header logo: the article
+  # footer holds nothing but pagination and comments, and with one post
+  # published pagination renders empty. Breadcrumbs put a labelled "Posts"
+  # link above every title until there are enough posts for pagination to
+  # carry its own weight.
+  showBreadcrumbs = true
   showDraftLabel = true
   showHeadingAnchors = true
   showPagination = true
