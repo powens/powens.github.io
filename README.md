@@ -33,7 +33,7 @@ hugo server -D
 hugo new content posts/my-post-title/index.md
 ```
 
-Edit the front matter, set `draft = false` when ready, and push to `master`.
+Edit the front matter, set `draft = false` when ready, and push to `main`.
 GitHub Actions builds and deploys automatically.
 
 ## Requirements
