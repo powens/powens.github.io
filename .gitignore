@@ -8,6 +8,7 @@ resources/_gen/
 
 # SDD process scratch
 .superpowers/
+docs/superpowers/
 
 # macOS
 .DS_Store
