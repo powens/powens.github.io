@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+  <!-- Header mark: the favicon's monogram P and transmission arcs, minus the
+       slate badge. Inlined by Blowfish, so the P inherits currentColor and
+       reads on either appearance; the arcs use cyan-600 rather than the
+       favicon's cyan-500, which needs a dark ground to hold contrast. -->
+  <g fill="none" stroke-linecap="round">
+    <path stroke="currentColor" stroke-width="6.5" d="M16 17v35"/>
+    <path stroke="currentColor" stroke-width="6.5" d="M16 17a10 10 0 0 1 0 20"/>
+    <path stroke="#0891B2" stroke-width="5" d="M32.1 13.5A21 21 0 0 1 32.1 40.5"/>
+    <path stroke="#0891B2" stroke-width="5" d="M41.9 8.2A32 32 0 0 1 41.9 45.8"/>
+  </g>
+</svg>

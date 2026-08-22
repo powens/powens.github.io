@@ -1,0 +1,28 @@
+[goldmark]
+  [goldmark.parser]
+    wrapStandAloneImageWithinParagraph = false
+
+    [goldmark.parser.attribute]
+      block = true
+
+  [goldmark.renderer]
+    unsafe = true
+
+  # Required by Blowfish, and not inheritable: Hugo replaces the theme's
+  # markup config with the site's rather than merging them, so omitting this
+  # block drops passthrough entirely. Without it Goldmark consumes the
+  # backslashes in \( ... \) and leaves $$ ... $$ as literal text, destroying
+  # the math delimiters in the rendered output before KaTeX ever sees them.
+  [goldmark.extensions]
+    [goldmark.extensions.passthrough]
+      enable = true
+      [goldmark.extensions.passthrough.delimiters]
+        block = [['\[', '\]'], ['$$', '$$']]
+        inline = [['\(', '\)']]
+
+[highlight]
+  noClasses = false
+
+[tableOfContents]
+  startLevel = 2
+  endLevel = 4

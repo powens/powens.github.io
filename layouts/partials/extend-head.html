@@ -1,0 +1,31 @@
+{{/*
+  Site-level additions to Blowfish, loaded through the theme's extend-head
+  hook (themes/blowfish/layouts/partials/head.html).
+
+  Repairs the theme's image zoom, which throws on every page load.
+
+  themes/blowfish/layouts/partials/head.html loads medium-zoom with `defer`,
+  but themes/blowfish/layouts/partials/footer.html calls `mediumZoom(...)`
+  from an inline <script> in the body. Inline scripts run during parsing and
+  deferred scripts run after it, so the call always fires first and dies with
+  "mediumZoom is not defined" — zoom never binds to a single image.
+
+  The theme's own off switch does not help: its guard reads
+  `{{`{{ if not .Site.Params.disableImageZoom | default true }}`}}`, and Hugo
+  pipes `default` into the result of `not`, so `disableImageZoom = true` gives
+  `default true false` — which is `true`. The block emits either way (verified
+  against a running server).
+
+  So instead of suppressing the call, make it succeed: request the same
+  fingerprinted asset without `defer`, which executes here during head parsing
+  and defines `mediumZoom` well before the body reaches the theme's call. The
+  URL is identical to the theme's, so this costs no extra network request; the
+  deferred tag re-runs the UMD afterwards, which only reassigns the global and
+  leaves the zoom instances the theme created still bound.
+
+  Revisit if the pinned theme submodule moves past v3.1.0 — upstream fixing
+  either the script ordering or the guard makes this file redundant.
+*/}}
+{{ $alg := site.Params.fingerprintAlgorithm | default "sha512" }}
+{{ $zoomJS := resources.Get "lib/zoom/zoom.min.umd.js" | resources.Fingerprint $alg }}
+<script src="{{ $zoomJS.RelPermalink }}" integrity="{{ $zoomJS.Data.Integrity }}"></script>

@@ -1,0 +1,60 @@
+{{ $disableImageOptimization := .Site.Params.disableImageOptimization | default false }}
+{{/* Site override: the theme centres this hero across the full content width,
+  while the Recent feed below is capped at max-w-prose and left-aligned. On a
+  1280 viewport that put the hero's centreline at 640 and the feed's at 496 —
+  144px of drift, and the source of the page's mixed-alignment look.
+
+  Capping the hero at the same max-w-prose (no mx-auto, so it stays flush left)
+  drops it into the feed's column: both centrelines land on 496 and the whole
+  page becomes one column with a centred masthead over left-aligned items.
+  Deliberately not the reverse fix — centring the feed instead would align the
+  homepage but shift it 144px away from /posts/, which is already internally
+  consistent, so navigating between them would visibly jump. */}}
+<article
+  class="{{ if not .Site.Params.homepage.showRecent }}
+    h-full
+  {{ end }} flex w-full max-w-prose flex-col items-center justify-center text-center">
+  <header class="relative px-1 py-1 flex flex-col items-center mb-3">
+    {{ with .Site.Params.Author.image }}
+      {{ $authorImage := "" }}
+      {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
+        {{ $authorImage = resources.GetRemote . }}
+      {{ else }}
+        {{ $authorImage = resources.Get . }}
+      {{ end }}
+      {{ if $authorImage }}
+        {{ $final := $authorImage }}
+        {{ $squareImage := $authorImage }}
+        {{ if not (or $disableImageOptimization (eq $authorImage.MediaType.SubType "svg")) }}
+          {{ $final = $authorImage.Fill (print "288x288 Center q" ( $.Site.Params.Author.imagequality | default "96" )) }}
+          {{ $shortSide := int (math.Min $authorImage.Width $authorImage.Height) }}
+          {{ $squareImage = $authorImage.Crop (printf "%dx%d Center" $shortSide $shortSide ) }}
+        {{ end }}
+        <img
+          class="mb-2 h-36 w-36 rounded-full"
+          width="144"
+          height="144"
+          alt="{{ $.Site.Params.Author.name | default `Author` }}"
+          loading="eager"
+          fetchpriority="high"
+          src="{{ $final.RelPermalink }}"
+          data-zoom-src="{{ $squareImage.RelPermalink }}">
+      {{ end }}
+    {{ end }}
+    <h1 class="text-4xl font-extrabold">
+      {{ .Site.Params.Author.name | default .Site.Title }}
+    </h1>
+    {{/* Site override: was an <h2>, which put the tagline into the document
+      outline as a sibling of the real "Recent" heading. It is a subtitle,
+      not a section, so it is a <p> carrying the same type styles. */}}
+    {{ with .Site.Params.Author.headline }}
+      <p class="text-xl text-neutral-500 dark:text-neutral-400">
+        {{ . | markdownify }}
+      </p>
+    {{ end }}
+    <div class="mt-1 text-2xl">
+      {{ partialCached "author-links.html" . }}
+    </div>
+  </header>
+  <section class="prose dark:prose-invert w-full">{{ .Content }}</section>
+</article>

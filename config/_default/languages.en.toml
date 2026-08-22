@@ -1,0 +1,25 @@
+disabled = false
+locale = "en"
+label = "English"
+weight = 1
+title = "Patrick Owens"
+
+[params]
+  displayName = "EN"
+  isoCode = "en"
+  rtl = false
+  dateFormat = "2 January 2006"
+  description = "Software, radio, and small plastic soldiers."
+  copyright = "© Patrick Owens"
+
+[params.author]
+  name = "Patrick Owens"
+  # Vendored copy of the GitHub profile photo rather than a remote URL, so a
+  # network failure cannot break the Pages build. Already square, so the
+  # theme's 288x288 centre fill only downscales it.
+  image = "img/avatar.jpg"
+  headline = "Software, radio, and small plastic soldiers."
+  links = [
+    { github = "https://github.com/powens" },
+    { rss = "/index.xml" },
+  ]
