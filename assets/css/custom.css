@@ -82,27 +82,59 @@ html.dark #quote-404-source {
   font-size: 1.125rem;
 }
 
-/* Centre the page on one column.
+/* Centre the reading column.
 
    Blowfish never pairs its `max-w-prose` column primitive with `mx-auto`, so
-   the reading column sat flush against the left edge of a content area that is
-   itself centred, while the header nav and footer spanned that area's full
-   width. At 1440 that put the column's centreline on 576 under a header and
-   footer centred on 720 — 144px of drift, and the reason the page read as
+   the reading column sits flush against the left edge of a content area that is
+   itself centred, while the header nav and footer span that area's full width.
+   At 1440 that put the column's centreline on 576 under a header and footer
+   centred on 720 — 144px of drift, and the reason the page read as
    knocked off-centre.
 
-   Fixing this on <main> works but stacks a third gutter: body already insets
-   the page twice, once via `m-auto` under `max-w-7xl` and again via
-   `px-6 sm:px-14 md:px-24 lg:px-32`, so a centred <main> added 144px more and
-   left the content indented under its own full-width header.
+   This was previously fixed by capping `body` at 62rem — the theme's lg gutter
+   (2 x 8rem) plus the 46rem `max-w-prose` resolves to at the 18px base — so the
+   body was exactly as wide as the reading column and drift was impossible
+   anywhere: hero, feed, header and footer all inherited the one number.
 
-   Constrain the body instead and the column has a single source of truth.
-   Everything inside — header, main, footer — inherits it and lines up, with no
-   per-element overrides to keep in sync. 62rem is the theme's lg gutter
-   (2 x 8rem) plus the 46rem the `max-w-prose` children already resolve to at
-   the 18px base, and box-sizing is border-box theme-wide, so the content box
-   lands on exactly that 46rem. Below lg the responsive padding keeps its own
-   smaller gutters and the column simply goes fluid. */
-body {
-  max-width: 62rem;
+   That single source of truth only holds while every page is one column. With
+   `showTableOfContents` on, `_default/single.html` makes the article body a
+   `lg:flex-row` and puts the TOC inside it as a sibling, spending 18rem of the
+   46rem budgeted for prose. The reading column collapsed to 28rem and 10 of 10
+   code blocks gained a horizontal scrollbar (7 of them still overflow at 46rem,
+   so the column was never the whole story there — but 28rem made it universal).
+
+   So the body goes back to the theme's own `max-w-7xl`, and the column it used
+   to imply gets stated where it belongs, on <main>. 46rem is the same figure as
+   before; 64rem is that plus the TOC's 18rem, i.e. exactly the two children of
+   the flex row, which is why the row has no free space to distribute and the
+   pair sits centred as a unit. Articles without a TOC, and every list, tag and
+   error page, keep the plain 46rem column. */
+main {
+  /* `width` is load-bearing, not redundant with the max-width. <main> is a flex
+     item in a column container, so it is normally stretch-sized to its parent;
+     adding an auto inline margin opts it out of stretch and it falls back to
+     content sizing, which for a post with 139-character code lines measured
+     996px inside a 760px parent and pushed a scrollbar onto the whole page at a
+     1024 viewport. An explicit width makes the box definite again, and the auto
+     margins then only distribute what is genuinely left over. */
+  width: 100%;
+  max-width: 46rem;
+  margin-inline: auto;
+}
+
+main:has(section.prose .toc) {
+  max-width: 64rem;
+}
+
+/* Belt and braces for a post whose content is narrower than the column: the
+   theme sizes that div with `max-w-fit`, so it shrink-wraps and would otherwise
+   sit flush left. Inert in the common case — with a TOC the row's two children
+   already total its full width, and without one the column fills it. Scoped to
+   `lg` because that is where the theme switches the row on; below it the
+   section is a flex column, where `justify-content` would distribute vertical
+   space instead. */
+@media (min-width: 1024px) {
+  main article > section.prose {
+    justify-content: center;
+  }
 }

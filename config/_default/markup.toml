@@ -23,6 +23,11 @@
 [highlight]
   noClasses = false
 
+# endLevel was 4, but no post has an h4, so h3 was the effective ceiling and the
+# extra level bought nothing. Listing every h3 did cost something: on a post like
+# calling-the-roll (8 h2s, 8 h3s) it made a 16-entry, 728px outline running the
+# full height of the first screen of prose. Capping at h2 keeps the TOC to the
+# post's top-level shape — what it is actually useful for — in half the height.
 [tableOfContents]
   startLevel = 2
-  endLevel = 4
+  endLevel = 2
