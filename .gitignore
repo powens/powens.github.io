@@ -6,7 +6,7 @@ resources/_gen/
 # Hugo module / theme caches
 .hugo/
 
-# SDD process scratch
+# Local scratch
 .superpowers/
 docs/superpowers/
 

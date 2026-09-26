@@ -1,4 +1,4 @@
-# -- Main menu (header) --
+# Header
 [[main]]
   name = "Posts"
   pageRef = "posts"
@@ -9,7 +9,7 @@
   pageRef = "tags"
   weight = 20
 
-# -- Footer menu --
+# Footer
 [[footer]]
   name = "RSS"
   url = "/index.xml"

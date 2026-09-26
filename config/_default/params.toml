@@ -9,10 +9,7 @@ mainSections = ["posts"]
 
 disableImageOptimization = false
 
-# The profile homepage already prints the name as its <h1>; printing it in
-# the header too said it twice on the page it matters most. The logo below
-# keeps a home link in the header (Blowfish gives it an sr-only site title),
-# which disabling the text alone would have removed entirely.
+# The homepage <h1> already shows the name. The logo keeps a home link.
 disableTextInHeader = true
 logo = "img/logo.svg"
 
@@ -45,11 +42,7 @@ defaultSocialImage = "img/og-default.png"
   externalLinkForceNewTab = false
   showDate = true
   showAuthor = false
-  # A post's only route back used to be the 32px header logo: the article
-  # footer holds nothing but pagination and comments, and with one post
-  # published pagination renders empty. Breadcrumbs put a labelled "Posts"
-  # link above every title until there are enough posts for pagination to
-  # carry its own weight.
+  # Gives posts a labelled way back to the list besides the header logo.
   showBreadcrumbs = true
   showDraftLabel = true
   showHeadingAnchors = true

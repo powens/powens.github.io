@@ -8,11 +8,8 @@
   [goldmark.renderer]
     unsafe = true
 
-  # Required by Blowfish, and not inheritable: Hugo replaces the theme's
-  # markup config with the site's rather than merging them, so omitting this
-  # block drops passthrough entirely. Without it Goldmark consumes the
-  # backslashes in \( ... \) and leaves $$ ... $$ as literal text, destroying
-  # the math delimiters in the rendered output before KaTeX ever sees them.
+  # Hugo replaces the theme's markup config rather than merging it, so this
+  # must be repeated here or Goldmark mangles math delimiters before KaTeX.
   [goldmark.extensions]
     [goldmark.extensions.passthrough]
       enable = true
@@ -23,11 +20,7 @@
 [highlight]
   noClasses = false
 
-# endLevel was 4, but no post has an h4, so h3 was the effective ceiling and the
-# extra level bought nothing. Listing every h3 did cost something: on a post like
-# calling-the-roll (8 h2s, 8 h3s) it made a 16-entry, 728px outline running the
-# full height of the first screen of prose. Capping at h2 keeps the TOC to the
-# post's top-level shape — what it is actually useful for — in half the height.
+# h2 only: including h3s made the TOC on longer posts run a full screen.
 [tableOfContents]
   startLevel = 2
   endLevel = 2

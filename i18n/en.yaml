@@ -1,5 +1,4 @@
-# Site-level string additions. Hugo merges this over the theme's i18n/en.yaml,
-# so only new or overridden keys belong here.
+# Merged over the theme's strings; only new or changed keys belong here.
 search:
   # %s is the search term the visitor typed.
   no_results: "No results for “%s”."
